@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BuildWithHiren – Reel</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a0a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Space Mono', monospace;
+    color: #fff;
+  }
+
+  .phone-frame {
+    width: 360px;
+    height: 640px;
+    border-radius: 36px;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid #222;
+    box-shadow: 0 0 60px rgba(0,255,180,0.15), 0 0 120px rgba(100,80,255,0.1);
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 36px 28px;
+    opacity: 0;
+    transform: translateY(40px) scale(0.96);
+    transition: opacity 0.6s cubic-bezier(.4,0,.2,1), transform 0.6s cubic-bezier(.4,0,.2,1);
+    pointer-events: none;
+    text-align: center;
+  }
+
+  .slide.active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+  }
+
+  /* ─── Slide 1 – Intro ─── */
+  .s1 { background: radial-gradient(ellipse at 50% 30%, #1a1a2e 0%, #0d0d0d 70%); }
+  .s1::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 38px,
+      rgba(0,255,180,0.04) 38px, rgba(0,255,180,0.04) 39px
+    );
+  }
+  .logo-ring {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    border: 2px solid #00ffb4;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    box-shadow: 0 0 30px rgba(0,255,180,0.4);
+    animation: pulse 2.5s infinite;
+    position: relative; z-index: 1;
+  }
+  .logo-ring span { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; color: #00ffb4; }
+  .s1 h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px; font-weight: 800;
+    line-height: 1.1; position: relative; z-index: 1;
+  }
+  .s1 h1 .accent { color: #00ffb4; }
+  .s1 .tagline {
+    margin-top: 14px; font-size: 12px; color: #888; letter-spacing: 2px;
+    text-transform: uppercase; position: relative; z-index: 1;
+  }
+  .s1 .handle {
+    margin-top: 22px; font-size: 13px; color: #555;
+    position: relative; z-index: 1;
+  }
+  .s1 .handle span { color: #00ffb4; }
+
+  /* ─── Slide 2 – Problem ─── */
+  .s2 { background: #0d0d0d; }
+  .s2 .big-q {
+    font-family: 'Syne', sans-serif;
+    font-size: 52px; font-weight: 800;
+    color: #1a1a1a;
+    position: absolute; top: 30px; left: 20px;
+  }
+  .s2 .qs { position: relative; z-index: 1; }
+  .s2 .qs p {
+    font-size: 15px; color: #777; margin-bottom: 12px;
+    border-left: 2px solid #333; padding-left: 14px; text-align: left;
+  }
+  .s2 h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px; font-weight: 800;
+    margin-bottom: 28px;
+  }
+  .s2 h2 .neon { color: #ff4d6d; }
+  .s2 .answer {
+    background: rgba(0,255,180,0.05);
+    border: 1px solid rgba(0,255,180,0.2);
+    border-radius: 12px; padding: 16px 20px;
+    font-size: 14px; color: #ccc; line-height: 1.6; text-align: left;
+    position: relative; z-index: 1;
+  }
+  .s2 .answer strong { color: #00ffb4; }
+
+  /* ─── Slide 3 – Solution ─── */
+  .s3 { background: linear-gradient(160deg, #0a0a1a 0%, #0d0d0d 100%); }
+  .s3 h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 24px; font-weight: 800; margin-bottom: 24px;
+  }
+  .s3 h2 .neon { color: #7b5ea7; }
+  .step-list { width: 100%; position: relative; z-index: 1; }
+  .step-item {
+    display: flex; align-items: flex-start; gap: 14px;
+    margin-bottom: 16px; text-align: left;
+  }
+  .step-num {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(135deg, #00ffb4, #7b5ea7);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 800;
+    color: #000; flex-shrink: 0;
+  }
+  .step-text { font-size: 13px; color: #bbb; line-height: 1.5; padding-top: 6px; }
+  .step-text strong { color: #fff; display: block; font-size: 14px; margin-bottom: 2px; }
+
+  /* ─── Slide 4 – Formula ─── */
+  .s4 { background: #080808; }
+  .formula-wrap {
+    width: 100%; position: relative; z-index: 1;
+  }
+  .formula-wrap h2 {
+    font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
+    margin-bottom: 28px;
+  }
+  .formula-wrap h2 span { color: #00ffb4; }
+  .fbox {
+    border: 1px solid #222; border-radius: 14px;
+    padding: 18px; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 14px; text-align: left;
+  }
+  .fbox.glow { border-color: rgba(0,255,180,0.3); background: rgba(0,255,180,0.04); }
+  .fbox .icon { font-size: 26px; }
+  .fbox .info strong { display: block; font-size: 14px; color: #fff; margin-bottom: 3px; }
+  .fbox .info span { font-size: 12px; color: #666; }
+  .plus-sign { font-family: 'Syne', sans-serif; font-size: 28px; color: #333; margin: 4px 0; text-align: center; }
+  .eq-line {
+    background: linear-gradient(90deg, #00ffb4, #7b5ea7);
+    height: 2px; width: 100%; margin: 14px 0; border-radius: 2px;
+  }
+  .result-box {
+    background: linear-gradient(135deg, rgba(0,255,180,0.1), rgba(123,94,167,0.1));
+    border: 1px solid rgba(0,255,180,0.3);
+    border-radius: 14px; padding: 16px;
+    font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 800;
+    color: #00ffb4; text-align: center;
+  }
+
+  /* ─── Slide 5 – CTA ─── */
+  .s5 {
+    background: radial-gradient(ellipse at 50% 60%, #0a1a15 0%, #080808 70%);
+  }
+  .s5 .tag {
+    font-size: 11px; letter-spacing: 3px; color: #00ffb4;
+    text-transform: uppercase; margin-bottom: 16px;
+    border: 1px solid rgba(0,255,180,0.3);
+    padding: 6px 14px; border-radius: 999px;
+  }
+  .s5 h2 {
+    font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 800;
+    line-height: 1.15; margin-bottom: 20px;
+  }
+  .s5 h2 .neon { color: #00ffb4; }
+  .s5 .price-badge {
+    background: #00ffb4; color: #000;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 18px;
+    padding: 10px 28px; border-radius: 999px; margin-bottom: 20px;
+    box-shadow: 0 0 30px rgba(0,255,180,0.5);
+    animation: pulse 2s infinite;
+  }
+  .s5 .sub { font-size: 12px; color: #555; margin-bottom: 28px; }
+  .s5 .handle-big {
+    font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800;
+    color: #fff;
+  }
+  .s5 .handle-big span { color: #00ffb4; }
+
+  /* ─── Dots ─── */
+  .dots {
+    display: flex; gap: 8px; margin-top: 20px; z-index: 10;
+  }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #333; cursor: pointer; transition: all 0.3s;
+  }
+  .dot.active { background: #00ffb4; width: 22px; border-radius: 4px; }
+
+  /* ─── Controls ─── */
+  .controls { display: flex; gap: 12px; margin-top: 16px; }
+  .btn {
+    background: #161616; border: 1px solid #2a2a2a;
+    color: #888; padding: 10px 24px; border-radius: 999px;
+    cursor: pointer; font-family: 'Space Mono', monospace; font-size: 13px;
+    transition: all 0.2s;
+  }
+  .btn:hover { border-color: #00ffb4; color: #00ffb4; }
+
+  /* ─── Progress Bar ─── */
+  .progress-bar {
+    position: absolute; top: 0; left: 0; height: 3px;
+    background: linear-gradient(90deg, #00ffb4, #7b5ea7);
+    border-radius: 0 3px 3px 0;
+    transition: width 0.4s linear;
+    z-index: 20;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(0,255,180,0.4); }
+    50% { box-shadow: 0 0 40px rgba(0,255,180,0.7); }
+  }
+
+  .caption-box {
+    margin-top: 18px;
+    background: #111; border: 1px solid #1e1e1e;
+    border-radius: 16px; padding: 16px 20px;
+    width: 360px; text-align: left;
+  }
+  .caption-box .cap-label {
+    font-size: 10px; letter-spacing: 2px; color: #444; text-transform: uppercase; margin-bottom: 8px;
+  }
+  .caption-box .cap-text { font-size: 12px; color: #666; line-height: 1.7; }
+  .caption-box .cap-text .hl { color: #00ffb4; }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+  <div class="progress-bar" id="progressBar" style="width:20%"></div>
+
+  <!-- Slide 1: Intro -->
+  <div class="slide s1 active">
+    <div class="logo-ring"><span>BH</span></div>
+    <h1>BUILD<br><span class="accent">WITH</span><br>HIREN</h1>
+    <p class="tagline">Web Developer • Freelancer</p>
+    <p class="handle">@<span>buildwithhiren</span></p>
+  </div>
+
+  <!-- Slide 2: Problem -->
+  <div class="slide s2">
+    <div class="big-q">?</div>
+    <h2>Does your business<br><span class="neon">have a website?</span></h2>
+    <div class="qs">
+      <p>Your competitor is already online...</p>
+      <p>Customers Google before buying...</p>
+      <p>No website = losing money 💸</p>
+    </div>
+    <div class="answer" style="margin-top:20px">
+      <strong>I build websites</strong> for local businesses,<br>
+      shops, gyms & startups — fast & affordable.
+    </div>
+  </div>
+
+  <!-- Slide 3: How it works -->
+  <div class="slide s3">
+    <h2>How I <span class="neon">work</span></h2>
+    <div class="step-list">
+      <div class="step-item">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>You share your idea</strong>Tell me your business & what you need</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>I design & build</strong>Clean, fast, mobile-friendly website</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>You go live 🚀</strong>Your site is live — customers find you</div>
+      </div>
+      <div class="step-item">
+        <div class="step-num">4</div>
+        <div class="step-text"><strong>Payment online ✅</strong>Razorpay integration available</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Slide 4: Formula -->
+  <div class="slide s4">
+    <div class="formula-wrap">
+      <h2>The <span>Smart</span> Formula</h2>
+      <div class="fbox glow">
+        <div class="icon">🤖</div>
+        <div class="info">
+          <strong>AI Power (70%)</strong>
+          <span>Fast, modern code generation</span>
+        </div>
+      </div>
+      <div class="plus-sign">+</div>
+      <div class="fbox">
+        <div class="icon">🧠</div>
+        <div class="info">
+          <strong>Human Polish (30%)</strong>
+          <span>Custom design, fixes, delivery</span>
+        </div>
+      </div>
+      <div class="eq-line"></div>
+      <div class="result-box">= 100% Professional Website 🔥</div>
+    </div>
+  </div>
+
+  <!-- Slide 5: CTA -->
+  <div class="slide s5">
+    <div class="tag">Limited Slots Open</div>
+    <h2>Get your<br><span class="neon">website</span><br>today</h2>
+    <div class="price-badge">Starting ₹999</div>
+    <p class="sub">Fast • Affordable • Mobile-Friendly</p>
+    <p class="handle-big">📩 DM <span>@buildwithhiren</span></p>
+  </div>
+</div>
+
+<div class="dots">
+  <div class="dot active" onclick="goTo(0)"></div>
+  <div class="dot" onclick="goTo(1)"></div>
+  <div class="dot" onclick="goTo(2)"></div>
+  <div class="dot" onclick="goTo(3)"></div>
+  <div class="dot" onclick="goTo(4)"></div>
+</div>
+
+<div class="controls">
+  <button class="btn" onclick="prev()">← Prev</button>
+  <button class="btn" id="autoBtn" onclick="toggleAuto()">▶ Auto</button>
+  <button class="btn" onclick="next()">Next →</button>
+</div>
+
+<!-- Caption -->
+<div class="caption-box">
+  <div class="cap-label">📋 Instagram Caption</div>
+  <div class="cap-text" id="captionText"></div>
+</div>
+
+<script>
+  const captions = [
+    `🚀 Welcome to <span class="hl">@buildwithhiren</span>\n\nI help businesses grow online 💻\nFast • Affordable • Clean Design\n💰 Starting ₹999\n\n📩 DM me to get your website!\n\n#webdesign #freelancer #india #webdev`,
+    `❌ No website = losing customers daily\n\n✅ I build websites for:\n→ Shops & local businesses\n→ Gyms & cafes\n→ Portfolios\n\n💰 Starts at just ₹999\n📩 DM now!\n\n#smallbusiness #rajkot #websitedesign`,
+    `⚡ My process is SIMPLE:\n\n1️⃣ You tell me your idea\n2️⃣ I build it fast\n3️⃣ You go live 🚀\n\n+ Razorpay payment integration available!\n\n📩 DM <span class="hl">@buildwithhiren</span>`,
+    `🤖 AI + Human = 🔥\n\nI use smart tools to deliver\nprofessional websites FASTER\nand cheaper than agencies.\n\n💰 ₹999 only\n📩 DM to start\n\n#aiwebdev #freelancewebdesigner`,
+    `📩 Ready to go online?\n\nGet your website today!\n\n✨ Fast delivery\n📱 Mobile-friendly\n💳 Payment ready\n💰 Starting ₹999\n\n👉 DM <span class="hl">@buildwithhiren</span> NOW\n\n#websitefor999 #indiafreelancer`
+  ];
+
+  let current = 0;
+  let autoPlay = null;
+
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+  const progressBar = document.getElementById('progressBar');
+  const captionEl = document.getElementById('captionText');
+
+  function goTo(n) {
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    progressBar.style.width = ((current + 1) / slides.length * 100) + '%';
+    captionEl.innerHTML = captions[current].replace(/\n/g, '<br>');
+  }
+
+  function next() { goTo((current + 1) % slides.length); }
+  function prev() { goTo((current - 1 + slides.length) % slides.length); }
+
+  function toggleAuto() {
+    const btn = document.getElementById('autoBtn');
+    if (autoPlay) {
+      clearInterval(autoPlay);
+      autoPlay = null;
+      btn.textContent = '▶ Auto';
+    } else {
+      autoPlay = setInterval(next, 2500);
+      btn.textContent = '⏸ Stop';
+    }
+  }
+
+  // Init caption
+  captionEl.innerHTML = captions[0].replace(/\n/g, '<br>');
+</script>
+</body>
+</html>
